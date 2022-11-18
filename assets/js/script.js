@@ -1,10 +1,8 @@
-var fetchButton = document.getElementById("fetch-button");
-
+let gwApiKey = '3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06'
 let example = "";
 
 function getApi() {
-  var requestUrl =
-    "https://api.guildwars2.com/v2/account/wallet?access_token=3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06";
+  var requestUrl = `https://api.guildwars2.com/v2/account/wallet?access_token=${gwApiKey}`;
 
   fetch(requestUrl)
     .then(function (response) {
@@ -24,10 +22,6 @@ function getApi() {
           console.log(`$${parseFloat(example).toFixed(2)}`);
         });
     });
-}
-
-function precise(x) {
-  return x.toPrecision(4);
 }
 
 // fetchButton.addEventListener('click', getApi);
