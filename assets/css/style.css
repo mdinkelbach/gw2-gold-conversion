@@ -21,3 +21,16 @@ body {
 .btn:hover {
   background-color: maroon;
 }
+
+.usd-card {
+  border-radius: 20px;
+}
+
+.currency-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn:focus {
+  background-color: maroon;
+}
