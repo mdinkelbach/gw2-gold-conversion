@@ -1,10 +1,13 @@
-var fetchButton = document.getElementById("fetch-button");
+let enterEl = document.getElementById('enter-button');
+let apiFieldEl = document.getElementById('api-key')
 
+
+let gwApiKey = ''
+// Testing API Key: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
 let example = "";
 
-function getApi() {
-  var requestUrl =
-    "https://api.guildwars2.com/v2/account/wallet?access_token=3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06";
+function getApi(key) {
+  var requestUrl = `https://api.guildwars2.com/v2/account/wallet?access_token=${key}`;
 
   fetch(requestUrl)
     .then(function (response) {
@@ -25,12 +28,6 @@ function getApi() {
         });
     });
 }
-
-function precise(x) {
-  return x.toPrecision(4);
-}
-
-// fetchButton.addEventListener('click', getApi);
 
 // ------------------- EXCHANGE RATE JS --------------------
 
@@ -85,3 +82,18 @@ function getExchangeRate() {
 }
 
 getExchangeRate();
+
+let formSubmitHandler = function (event) {
+  event.preventDefault();
+
+  let api = apiFieldEl.value.trim();
+
+  if (api) {
+    gwApiKey = api
+    getApi(gwApiKey)
+  } else {
+    alert('Please enter a valid Guild Wars 2 API Key');
+  }
+};
+
+enterEl.addEventListener('click', formSubmitHandler);
