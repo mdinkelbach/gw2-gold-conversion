@@ -59,7 +59,13 @@ console.log(exchangeUrl);
 
 // FUNCTIONS--------------------
 
-function getExchangeRate() {
+function init() {
+    // retrieve latest data from exchange rate API
+    getExchangeRate();
+
+}
+
+var getExchangeRate = function() {
 
     fetch(exchangeUrl)
         .then(function (response) {
@@ -73,15 +79,34 @@ function getExchangeRate() {
                     // stores the object 'rates' from the data response into
                     // global variable object
                     acceptedCodeRateObject = data.rates;
-                  console.log("print rates", acceptedCodeRateObject);
+                    console.log("print rates", acceptedCodeRateObject);
+
+                    // Dynamically create dropdown to select currency
+                    var myOptions = acceptedCodeRateObject;
+                    var mySelect = $('#my-currency');
+                    // for each key-value (myCountryCode-myExchangeRate) pair
+                    // append the country code as an option in the drop down
+                    // use the exchange rate to perform operation to convert data
+                    $.each(myOptions, function(myCountryCode, myExchangeRate) {
+                        mySelect.append($('<option></option>').val(myCountryCode).html(myCountryCode));
+                        // TO-DO: ARITHMETIC FOR EXCHANGE RATE BASED ON COUNTRY SELECTION
+                        // if any of the country codes are selected (this forces user to
+                        // make code selection instead of leaving placeholder as dropdown
+                        // option) thenuse the corresponding value to perform exchange rate
+                        if (myCountryCode) {
+                            // TO-DO: MATH
+                            console.log("DO MAFFS HERE");
+                        }
+                    });
                 });
               } else {
                 alert('Error: ' + response.statusText);
               }
-        })
+
+        });
 }
 
-getExchangeRate();
+// EVENT HANDLERS-----------------------------------
 
 let formSubmitHandler = function (event) {
   event.preventDefault();
@@ -97,3 +122,7 @@ let formSubmitHandler = function (event) {
 };
 
 enterEl.addEventListener('click', formSubmitHandler);
+
+// RUN PROGRAM--------------------------------------
+init();
+

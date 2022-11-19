@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <!-- jquery script -->
+    <script src="https://code.jquery.com/jquery-git.js"></script>
     <!-- Compiled and minified CSS -->
     <link
       rel="stylesheet"
@@ -90,11 +92,16 @@
                 </li>
                 <li><a href="#!">three</a></li>
               </ul>
-              <a class="btn dropdown-trigger" href="#!" data-target="dropdown2"
+
+              <!-- Dynamic dropdown -->
+              <select class="btn dropdown-trigger" id="my-currency" href="#!" data-target="dropdown2"
                 >Select Currency<i class="material-icons right"
-                  >arrow_drop_down</i
-                ></a
-              >
+                  >arrow_drop_down</i>
+                  <!-- This static option is the placeholder -->
+                  <!-- All currency options are dynamically generated in javascript -->
+                  <option value="placeholder-option">Select Currency</option>
+            </select>
+
             </div>
           </div>
         </form>
