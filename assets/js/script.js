@@ -1,13 +1,12 @@
-let enterEl = document.getElementById('enter-button');
-let apiFieldEl = document.getElementById('api-key');
-let goldFieldEl = document.getElementById('gold');
-let gemsFieldEl = document.getElementById('gems');
-let usdFieldEl = document.getElementById('usd');
-let currencyFieldEl = document.getElementById('my-currency');
+const enterEl = document.getElementById('enter-button');
+const apiFieldEl = document.getElementById('api-key');
+const goldFieldEl = document.getElementById('gold');
+const gemsFieldEl = document.getElementById('gems');
+const usdFieldEl = document.getElementById('usd');
+const currencyFieldEl = document.getElementById('my-currency');
 
-
+// Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
 let gwApiKey = '';
-// Testing API Key: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
 let usdValue = '';
 let newUsdValue = '';
 
@@ -32,12 +31,14 @@ function getApi(key) {
           gemsFieldEl.textContent = data1.quantity
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
           //console.log(`$${parseFloat(usdValue).toFixed(2)}`);
-          newUsdValue = `$${parseFloat(usdValue).toFixed(2)}`          
-          usdFieldEl.textContent = newUsdValue
+          newUsdValue = parseFloat(usdValue).toFixed(2)
+          let displayUsdValue = `$${newUsdValue}`
+          usdFieldEl.textContent = displayUsdValue
+          currencyExchange();
         });
     });
+   
     
-    currencyExchange();
 }
 
 // ------------------- EXCHANGE RATE JS --------------------
@@ -91,29 +92,31 @@ var getExchangeRate = function() {
                     // global variable object
                     acceptedCodeRateObject = data.rates;
                     console.log("print rates", acceptedCodeRateObject);
+                    i = 0
 
                     // Dynamically create dropdown to select currency
                     var myOptions = acceptedCodeRateObject;
-                    var mySelect = $('#my-currency');
+                    var mySelect = $('#my-currency');                    
                     // for each key-value (myCountryCode-myExchangeRate) pair
                     // append the country code as an option in the drop down
                     // use the exchange rate to perform operation to convert data
                     $.each(myOptions, function(myCountryCode, myExchangeRate) {
-                        mySelect.append($(`<option data-name="${myCountryCode}"></option>`).val(myCountryCode).html(myCountryCode));
-                        acceptedCurrencyRateArray.push(myExchangeRate)                      
+                        mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
+                        acceptedCurrencyRateArray.push(myExchangeRate)               
                     });
                 });
               } else {
+                //TODO: Alert needs to be removed
                 alert('Error: ' + response.statusText);
-              }
-
+              }              
         });
 }
 
-var currencyExchange = function() {
-  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
-    console.log('Trigger');
-  }
+var currencyExchange = function() {  
+  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {    
+    let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
+    console.log(newUsdValue*acceptedCurrencyRateArray[rateValue]);
+    }
 };
 
 // EVENT HANDLERS-----------------------------------
@@ -127,6 +130,7 @@ let formSubmitHandler = function (event) {
     gwApiKey = api
     getApi(gwApiKey)
   } else {
+    //TODO: Alert needs to be removed
     alert('Please enter a valid Guild Wars 2 API Key');
   }
 };
