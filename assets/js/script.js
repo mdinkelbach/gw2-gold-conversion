@@ -3,11 +3,13 @@ let apiFieldEl = document.getElementById('api-key');
 let goldFieldEl = document.getElementById('gold');
 let gemsFieldEl = document.getElementById('gems');
 let usdFieldEl = document.getElementById('usd');
+let currencyFieldEl = document.getElementById('my-currency');
 
 
 let gwApiKey = '';
 // Testing API Key: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
 let usdValue = '';
+let newUsdValue = '';
 
 function getApi(key) {
   let requestUrl = `https://api.guildwars2.com/v2/account/wallet?access_token=${key}`;
@@ -30,11 +32,12 @@ function getApi(key) {
           gemsFieldEl.textContent = data1.quantity
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
           //console.log(`$${parseFloat(usdValue).toFixed(2)}`);
-          usdFieldEl.textContent = `$${parseFloat(usdValue).toFixed(2)}`
+          newUsdValue = `$${parseFloat(usdValue).toFixed(2)}`          
+          usdFieldEl.textContent = newUsdValue
         });
     });
-
-
+    
+    currencyExchange();
 }
 
 // ------------------- EXCHANGE RATE JS --------------------
@@ -96,16 +99,8 @@ var getExchangeRate = function() {
                     // append the country code as an option in the drop down
                     // use the exchange rate to perform operation to convert data
                     $.each(myOptions, function(myCountryCode, myExchangeRate) {
-                        mySelect.append($('<option></option>').val(myCountryCode).html(myCountryCode));
-                        acceptedCurrencyRateArray.push(myExchangeRate)
-                        // TO-DO: ARITHMETIC FOR EXCHANGE RATE BASED ON COUNTRY SELECTION
-                        // if any of the country codes are selected (this forces user to
-                        // make code selection instead of leaving placeholder as dropdown
-                        // option) thenuse the corresponding value to perform exchange rate
-                        if (myCountryCode) {
-                            // TO-DO: MATH
-                            console.log("DO MAFFS HERE");
-                        }
+                        mySelect.append($(`<option data-name="${myCountryCode}"></option>`).val(myCountryCode).html(myCountryCode));
+                        acceptedCurrencyRateArray.push(myExchangeRate)                      
                     });
                 });
               } else {
@@ -114,6 +109,12 @@ var getExchangeRate = function() {
 
         });
 }
+
+var currencyExchange = function() {
+  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
+    console.log('Trigger');
+  }
+};
 
 // EVENT HANDLERS-----------------------------------
 
