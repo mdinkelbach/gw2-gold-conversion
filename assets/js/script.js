@@ -1,20 +1,24 @@
 let enterEl = document.getElementById('enter-button');
-let apiFieldEl = document.getElementById('api-key')
+let apiFieldEl = document.getElementById('api-key');
+let goldFieldEl = document.getElementById('gold');
+let gemsFieldEl = document.getElementById('gems');
+let usdFieldEl = document.getElementById('usd');
 
 
-let gwApiKey = ''
+let gwApiKey = '';
 // Testing API Key: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
-let example = "";
+let usdValue = '';
 
 function getApi(key) {
-  var requestUrl = `https://api.guildwars2.com/v2/account/wallet?access_token=${key}`;
+  let requestUrl = `https://api.guildwars2.com/v2/account/wallet?access_token=${key}`;
 
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data[0].value);
+      //console.log(data[0].value);
+      goldFieldEl.textContent = data[0].value
       let requestOtherUrl = `https://api.guildwars2.com/v2/commerce/exchange/coins?quantity=${data[0].value}`;
 
       fetch(requestOtherUrl)
@@ -22,11 +26,15 @@ function getApi(key) {
           return response.json();
         })
         .then(function (data1) {
-          console.log(data1.quantity);
-          example = Math.round(data1.quantity * 0.0125 * 100) / 100;
-          console.log(`$${parseFloat(example).toFixed(2)}`);
+          //console.log(data1.quantity);
+          gemsFieldEl.textContent = data1.quantity
+          usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
+          //console.log(`$${parseFloat(usdValue).toFixed(2)}`);
+          usdFieldEl.textContent = `$${parseFloat(usdValue).toFixed(2)}`
         });
     });
+
+
 }
 
 // ------------------- EXCHANGE RATE JS --------------------
@@ -89,6 +97,7 @@ var getExchangeRate = function() {
                     // use the exchange rate to perform operation to convert data
                     $.each(myOptions, function(myCountryCode, myExchangeRate) {
                         mySelect.append($('<option></option>').val(myCountryCode).html(myCountryCode));
+                        acceptedCurrencyRateArray.push(myExchangeRate)
                         // TO-DO: ARITHMETIC FOR EXCHANGE RATE BASED ON COUNTRY SELECTION
                         // if any of the country codes are selected (this forces user to
                         // make code selection instead of leaving placeholder as dropdown
