@@ -142,17 +142,19 @@ var currencyExchange = function() {
 let formSubmitHandler = function (event) {
   event.preventDefault();
 
-  // Trims API input
+  // Trims API input, then converts and pushes it to an array for verifacation
   let api = apiFieldEl.value.trim();
-
-  // Checks if an API Key that is entered is valid
-  if (api) {
+  let apiArray = []
+  apiArray.push(api.split(''));
+  
+  // Checks if an API Key that is entered is of a valid length
+  if (apiArray.length === 72) {
     gwApiKey = api
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
   } else {
     //TODO: Alert needs to be removed
-    alert('Please enter a valid Guild Wars 2 API Key');
+    alert('Please enter a valid 72 digit Guild Wars 2 API Key');
   }
 };
 
