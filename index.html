@@ -16,13 +16,17 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Shojumaru"
+    />
 
     <link href="./assets/css/style.css" rel="stylesheet" />
   </head>
 
   <body>
     <div class="layer">
-      <h1>GuildWars 2 Currency Conversion</h1>
+      <h1 class="heading">GuildWars 2 Currency Conversion</h1>
 
       <div class="row">
         <form class="col s12">
@@ -37,7 +41,9 @@
               <label for="first_name">API Key</label>
             </div>
             <div class="col s2 btn-container">
-              <a id="enter-button" class="waves-effect waves-light btn">Enter</a>
+              <a id="enter-button" class="waves-effect waves-light btn"
+                >Enter</a
+              >
             </div>
             <div class="col s8 btn-container">
               <div class="row currency-container">
@@ -45,9 +51,9 @@
                   <div class="card white darken-1 usd-card">
                     <div class="card-content black-text">
                       <span class="card-title"
-                        >Gold
-                        <p id="gold"></p></span
-                      >
+                        ><i class="material-icons left">stars</i>Gold
+                        <p id="gold"></p
+                      ></span>
                     </div>
                   </div>
                 </div>
@@ -55,9 +61,9 @@
                   <div class="card white darken-1 usd-card">
                     <div class="card-content black-text">
                       <span class="card-title"
-                        >Gems
-                        <p id="gems"></p></span
-                      >
+                        ><i class="material-icons left">diamond</i>Gems
+                        <p id="gems"></p
+                      ></span>
                     </div>
                   </div>
                 </div>
@@ -65,16 +71,16 @@
                   <div class="card white darken-1 usd-card">
                     <div class="card-content black-text">
                       <span class="card-title"
-                        >USD
-                        <p id="usd"></p></span
-                      >
+                        ><i class="material-icons left">attach_money</i>USD
+                        <p id="usd"></p
+                      ></span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row currency-select">
             <div class="col s3">
               <!-- <label>Materialize Select</label>
               <select multiple>
@@ -94,14 +100,31 @@
               </ul>
 
               <!-- Dynamic dropdown -->
-              <select class="btn dropdown-trigger" id="my-currency" href="#!" data-target="dropdown2"
-                >Select Currency<i class="material-icons right"
-                  >arrow_drop_down</i>
-                  <!-- This static option is the placeholder -->
-                  <!-- All currency options are dynamically generated in javascript -->
-                  <option value="placeholder-option">Select Currency</option>
-            </select>
-
+              <select
+                class="btn dropdown-trigger"
+                id="my-currency"
+                href="#!"
+                data-target="dropdown2"
+              >
+                Select Currency<i class="material-icons right"
+                  >arrow_drop_down</i
+                >
+                <!-- This static option is the placeholder -->
+                <!-- All currency options are dynamically generated in javascript -->
+                <option value="placeholder-option">Select Currency</option>
+              </select>
+            </div>
+            <div class="col s8 card-selected">
+              <div class="col s6 m4">
+                <div class="card white darken-1 usd-card hide">
+                  <div class="card-content black-text">
+                    <span class="card-title"
+                      >USD
+                      <p id="usd"></p
+                    ></span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </form>
