@@ -1,4 +1,4 @@
-# Project 01 - [REVIEW NAME - Guild Wars 2]
+# Project 01 - [Gold to Real Money Converter - Guild Wars 2]
 
 # Purpose
 The purpose of this project is to develop an original responsive webpage as a team using concepts learned in class over the previous several weeks. The main concepts for this integration are to:
@@ -14,15 +14,15 @@ Other points of interest within the acceptance criteria are to follow best pract
 
 ## Description
 
-The webpage waits for a user to input their Guild Wars 2 API. On "Submit" the webpage will display the amount of gold and gems the user has accumulated in the game; convert the game currency into USD; allows the user to select one of 15 currencies in the dropdown; and converts USD into the user-selected currency.
+The webpage waits for a user to input their Guild Wars 2 API Key. On "Submit" the webpage will display the amount of gold the user currently has on their person; converts that amount into a secondary game currency called Gems (curreny that is usually obtained with real world money); then converts the gem amount into USD; a final, optional, step allows the user to select one of 15 currencies in the dropdown; and converts USD into the user-selected currency.
 
 Each API entered is saved into local storage for quick recall by the user in the future.
 
 
 
-![Image of eebsite on initial load](./assets/images/hanks-workday-scheduler.png)
-![Image of website displaying local storage use]()
-![Image of website with conversion figures]()
+![Image of website on initial load](./assets/images/{inital load}.png)
+![Image of website displaying local storage use](./assets/images/{with local storage}.png)
+![Image of website with conversion figures](./assets/images/{with outputs filled}.png)
 
 
 ## Installation
@@ -31,7 +31,7 @@ N/A
 
 ## Usage
 
-Open the webpage using the [live URL link](https://chloeeh.github.io/hanks-workday-scheduler/) and use Chrome Developer Tools to inspect the source code. The code is commented and includes accessibility tags compared to the original code that used generic division tags.
+Open the webpage using the [live URL link](https://mdinkelbach.github.io/gw2-gold-conversion/) and use Chrome Developer Tools to inspect the source code. The code is commented and includes accessibility tags compared to the original code that used generic division tags.
 
 
 ## Credits
