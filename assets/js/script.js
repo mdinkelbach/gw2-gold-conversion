@@ -148,7 +148,7 @@ let formSubmitHandler = function (event) {
   apiArray.push(api.split(''));
   
   // Checks if an API Key that is entered is of a valid length
-  if (apiArray.length === 72) {
+  if (apiArray[0].length === 72) {
     gwApiKey = api
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
