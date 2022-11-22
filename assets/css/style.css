@@ -12,6 +12,17 @@ body {
   width: 100%;
   height: 100%;
 }
+.currency-select {
+  display: flex;
+  justify-content: space-between;
+}
+.card-selected {
+  position: relative;
+  left: 44vw !important;
+}
+.heading {
+  font-family: "Shojumaru", serif;
+}
 
 .btn {
   background-color: red;
@@ -25,7 +36,9 @@ body {
 .usd-card {
   border-radius: 20px;
 }
-
+.hide {
+  display: none;
+}
 .currency-container {
   display: flex;
   justify-content: space-around;

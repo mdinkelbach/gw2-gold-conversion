@@ -162,4 +162,3 @@ enterEl.addEventListener('click', formSubmitHandler);
 
 // RUN PROGRAM--------------------------------------
 init();
-
