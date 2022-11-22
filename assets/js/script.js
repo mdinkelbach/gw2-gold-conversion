@@ -24,6 +24,10 @@ function getApi(key) {
 
   fetch(requestUrl)
     .then(function (response) {
+      // if (!response.ok) {
+      //   modal.append($('<p></p>').html("Error: " +response.statusText));
+      //   modal.style.display = "block";
+      // }
       return response.json();
     })
     .then(function (data) {
@@ -35,6 +39,11 @@ function getApi(key) {
 
       fetch(requestOtherUrl)
         .then(function (response) {
+          
+          if (!response.ok) {
+            modal.append($('<p></p>').html("Error: " +response.statusText));
+            modal.style.display = "block";
+          }
           return response.json();
         })
         .then(function (data1) {
@@ -141,6 +150,27 @@ var currencyExchange = function() {
     }
 };
 
+
+/* ---------------------- MODALS ----------------------- */
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 // EVENT HANDLERS-----------------------------------
 
 let formSubmitHandler = function (event) {
@@ -157,8 +187,9 @@ let formSubmitHandler = function (event) {
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
   } else {
-    //TODO: Alert needs to be removed
-    alert('Please enter a valid 72 digit Guild Wars 2 API Key');
+    // Created <p> element to alert user to enter a valid key
+    modal.append($('<p></p>').html("Please enter a valid Guild Wars 2 API Key"));
+    modal.style.display = "block";
   }
 };
 
