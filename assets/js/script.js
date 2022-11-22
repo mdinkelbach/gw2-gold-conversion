@@ -127,13 +127,17 @@ var getExchangeRate = function() {
 }
 
 var currencyExchange = function() {
+  const currencyTitle = $("#currency-title")
+  const currencyValue = $("#currency-value")
   // Checks if an optional currency is used to convert after USD is established
   if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {    
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
+    $(".usd-card").removeClass("hide");
+    currencyTitle[0].textContent = currencyFieldEl.value;
     // TODO: Converted result needs to be moved to an output
     // Uses currency dataset value to multiply USD value with currency exchange rates
-    console.log(newUsdValue*acceptedCurrencyRateArray[rateValue]);
+    //currencyValue.textContent = newUsdValue*acceptedCurrencyRateArray[rateValue];
     }
 };
 
