@@ -19,7 +19,6 @@ The webpage waits for a user to input their Guild Wars 2 API Key. On "Submit" th
 Each API entered is saved into local storage for quick recall by the user in the future.
 
 
-
 ![Image of website on initial load](./assets/images/{inital load}.png)
 ![Image of website displaying local storage use](./assets/images/{with local storage}.png)
 ![Image of website with conversion figures](./assets/images/{with outputs filled}.png)
@@ -39,10 +38,10 @@ Open the webpage using the [live URL link](https://mdinkelbach.github.io/gw2-gol
 Resources used:
 1) [Guild Wars 2 API](https://wiki.guildwars2.com/wiki/API:Main)
 2) [Currency Freaks API ](https://currencyfreaks.com/documentation.html)
-3) [CSS FRAMEKWORK------------]() 
+3) [Materialize]() 
 4) Bootcamp Modules
 5) [jQuery.each()](https://api.jquery.com/jquery.each/#:~:text=each()%2C%20which%20is%20used,corresponding%20array%20value%20each%20time.)
-6) [jQuery Get Selected Option From Dropdown](https://stackoverflow.com/questions/10659097/jquery-get-selected-option-from-dropdown)the%20number%20of,the%20number%20of%20matching%20elements.)
+6) [jQuery Get Selected Option From Dropdown](https://stackoverflow.com/questions/10659097/jquery-get-selected-option-from-dropdown)
 
 
 
