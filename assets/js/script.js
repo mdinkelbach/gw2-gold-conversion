@@ -73,9 +73,23 @@ var currencyRateArray = [];
 // This webpage will allow users to select the following 15
 // currency options as a base option.
 // It is possible to push more to codes to this array if desired
-var acceptedCurrencyCodeArray = ["MXN", "EUR", "JPY", "GBP", "CNY", 
-                               "AUD", "CAD", "CHF", "HKD", "SGD",
-                               "SEK", "KRW", "NOK", "NZD", "INR"];
+var acceptedCurrencyCodeArray = [
+  "MXN",
+  "EUR",
+  "JPY",
+  "GBP",
+  "CNY",
+  "AUD",
+  "CAD",
+  "CHF",
+  "HKD",
+  "SGD",
+  "SEK",
+  "KRW",
+  "NOK",
+  "NZD",
+  "INR",
+];
 var acceptedCurrencyCodeString = acceptedCurrencyCodeArray.toString();
 // console.log(acceptedCurrencyCodeString);
 // This array will hold the rates corresponding to the
@@ -99,54 +113,56 @@ function init() {
 
 }
 
-var getExchangeRate = function() {
+var getExchangeRate = function () {
+  fetch(exchangeUrl).then(function (response) {
+    // check that code is viable
+    // store data from API into global object
+    if (response.ok) {
+      console.log(response);
+      myData = response.json();
+      myData.then(function (data) {
+        console.log("print full object of objects", data);
+        // stores the object 'rates' from the data response into
+        // global variable object
+        acceptedCodeRateObject = data.rates;
+        console.log("print rates", acceptedCodeRateObject);
+        i = 0;
 
-    fetch(exchangeUrl)
-        .then(function (response) {
-            // check that code is viable
-            // store data from API into global object
-            if (response.ok) {
-                // console.log(response);
-                myData = response.json();
-                myData.then(function (data) {
-                    // console.log("print full object of objects", data);
-                    // stores the object 'rates' from the data response into
-                    // global variable object
-                    acceptedCodeRateObject = data.rates;
-                    // console.log("print rates", acceptedCodeRateObject);
-                    i = 0
-
-                    // Dynamically create dropdown to select currency
-                    var myOptions = acceptedCodeRateObject;
-                    var mySelect = $('#my-currency');                    
-                    // for each key-value (myCountryCode-myExchangeRate) pair
-                    // append the country code as an option in the drop down
-                    // use the exchange rate to perform operation to convert data
-                    $.each(myOptions, function(myCountryCode, myExchangeRate) {
-                        mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
-                        // Adds all currency rates to the global array
-                        acceptedCurrencyRateArray.push(myExchangeRate)               
-                    });
-                });
-              } else {
-                //TODO: Alert needs to be removed
-                alert('Error: ' + response.statusText);
-              }              
+        // Dynamically create dropdown to select currency
+        var myOptions = acceptedCodeRateObject;
+        var mySelect = $("#my-currency");
+        // for each key-value (myCountryCode-myExchangeRate) pair
+        // append the country code as an option in the drop down
+        // use the exchange rate to perform operation to convert data
+        $.each(myOptions, function (myCountryCode, myExchangeRate) {
+          mySelect.append(
+            $(`<option data-name="${i++}"></option>`)
+              .val(myCountryCode)
+              .html(myCountryCode)
+          );
+          acceptedCurrencyRateArray.push(myExchangeRate);
         });
-}
+      });
+    } else {
+      //TODO: Alert needs to be removed
+      modal.append($('<p></p>').html("Error: " +response.statusText));
+      modal.style.display = "block";
+      // alert("Error: " + response.statusText);
+    }
+  });
+};
 
 var currencyExchange = function() {
-  const currencyTitle = $("#currency-title")
-  const currencyValue = $("#currency-value")
+  const currencyTitle = $("#extra-currency");
   // Checks if an optional currency is used to convert after USD is established
   if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {    
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
+    // Displays output for optional currency conversion
     $(".usd-card").removeClass("hide");
     currencyTitle[0].textContent = currencyFieldEl.value;
-    // TODO: Converted result needs to be moved to an output
     // Uses currency dataset value to multiply USD value with currency exchange rates
-    //currencyValue.textContent = newUsdValue*acceptedCurrencyRateArray[rateValue];
+    currencyTitle.append($('<p></p>').html(parseFloat(newUsdValue*acceptedCurrencyRateArray[rateValue]).toFixed(2)))
     }
 };
 
@@ -188,7 +204,7 @@ let formSubmitHandler = function (event) {
     getApi(gwApiKey)
   } else {
     // Created <p> element to alert user to enter a valid key
-    modal.append($('<p></p>').html("Please enter a valid Guild Wars 2 API Key"));
+    modal.append($('<p></p>').html("Please enter a valid 72 digit Guild Wars 2 API Key"));
     modal.style.display = "block";
   }
 };
