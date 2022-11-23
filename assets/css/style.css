@@ -109,14 +109,16 @@ body {
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: maroon;
   color: white;
+}
+
+.modal-header h2 {
+  font-size: 4rem;
+}
+
+#modal-text {
+  font-size: 2.5rem;
 }
 
 .modal-body {padding: 2px 16px;}
-
-.modal-footer {
-  padding: 2px 16px;
-  background-color: #5cb85c;
-  color: white;
-}

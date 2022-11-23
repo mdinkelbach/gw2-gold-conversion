@@ -36,10 +36,11 @@ function getApi(key) {
 
   fetch(requestUrl)
     .then(function (response) {
-      // if (!response.ok) {
-      //   modal.append($('<p></p>').html("Error: " +response.statusText));
-      //   modal.style.display = "block";
-      // }
+      if (!response.ok) {
+        // if the response is not 'ok', display to user in modal
+        modalText.textContent = "Error: " +response.statusText;
+        modal.style.display = "block";
+      }
       return response.json();
     })
     .then(function (data) {
@@ -53,7 +54,8 @@ function getApi(key) {
         .then(function (response) {
           
           if (!response.ok) {
-            modal.append($('<p></p>').html("Error: " +response.statusText));
+            // if the response is not 'ok', display to user in modal
+            modalText.textContent = "Error: " +response.statusText;
             modal.style.display = "block";
           }
           return response.json();
@@ -156,10 +158,9 @@ var getExchangeRate = function () {
         });
       });
     } else {
-      //TODO: Alert needs to be removed
-      modal.append($('<p></p>').html("Error: " +response.statusText));
+      // if the response is not 'ok', display to user in modal
+      modalText.textContent = "Error: " +response.statusText;
       modal.style.display = "block";
-      // alert("Error: " + response.statusText);
     }
   });
 };
@@ -181,8 +182,16 @@ var currencyExchange = function() {
 
 /* ---------------------- MODALS ----------------------- */
 
-// Get the modal
-var modal = document.getElementById("myModal");
+// Get the modal main div
+var modal = document.getElementById("my-modal");
+// Get the modal div that will display the error text to user
+var modalAlert = document.getElementById("modal-alert");
+// create a <p> element in html, give it an ID, determine text content
+// append the text to the modalAlert div
+var modalText = document.createElement('p');
+modalText.setAttribute("id", "modal-text");
+modalText.textContent = "Please enter a valid 72 digit Guild Wars 2 API Key";
+modalAlert.append(modalText);
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -219,8 +228,7 @@ let formSubmitHandler = function (event) {
     localStorage.setItem(`api${apiSave}`, api)
     //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
   } else {
-    // Created <p> element to alert user to enter a valid key
-    modal.append($('<p></p>').html("Please enter a valid 72 digit Guild Wars 2 API Key"));
+    // Display the modal if the user input does not meet API standards
     modal.style.display = "block";
   }
   if (localStorage.getItem(`apiSaveNumber`) === 3) {
