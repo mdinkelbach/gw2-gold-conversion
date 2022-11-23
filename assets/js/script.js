@@ -6,7 +6,7 @@ const gemsFieldEl = document.getElementById('gems');
 const usdFieldEl = document.getElementById('usd');
 const currencyFieldEl = document.getElementById('my-currency');
 
-// Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
+// Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416 | 47CCF467-6BAC-384A-862D-9CB56277395909CA89B9-B43F-4E8C-BD64-1185E8426D04
 
 // ------------------- GW2 API JS --------------------
 
@@ -19,13 +19,13 @@ let apiSave = localStorage.getItem(`apiSaveNumber`)
 
 if (!apiSave) {
   localStorage.setItem(`apiSaveNumber`, 0)
-} else {
+} /*else {
   for (let i = 1; i < apiSave+1; i++) {
     if (localStorage.getItem(`api${i}`) === null) break; {
-      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</button>`);
+      apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</button>`);
     }
   }
-}
+}*/
 
 // FUNCTIONS--------------------
 
@@ -223,17 +223,22 @@ let formSubmitHandler = function (event) {
     gwApiKey = api
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
-    apiSave++
-    localStorage.setItem(`apiSaveNumber`, apiSave)
-    localStorage.setItem(`api${apiSave}`, api)
-    //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+    if (apiSave === 3) {
+      apiSave = 1
+      localStorage.setItem(`apiSaveNumber`, apiSave)
+      localStorage.setItem(`api${apiSave}`, api)
+      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+    } else {
+      apiSave++
+      localStorage.setItem(`apiSaveNumber`, apiSave)
+      localStorage.setItem(`api${apiSave}`, api)
+      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+    };
   } else {
     // Display the modal if the user input does not meet API standards
     modal.style.display = "block";
   }
-  if (localStorage.getItem(`apiSaveNumber`) === 3) {
-    localStorage.setItem(`apiSaveNumber`, 0)
-  }
+  
 };
 
 enterEl.addEventListener('click', formSubmitHandler);
