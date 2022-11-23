@@ -5,6 +5,7 @@ const goldFieldEl = document.getElementById("gold");
 const gemsFieldEl = document.getElementById("gems");
 const usdFieldEl = document.getElementById("usd");
 const currencyFieldEl = document.getElementById("my-currency");
+const apiHistoryEl = $('#history-buttons');
 
 /* ---------------------- MODALS ----------------------- */
 // Get the modal main div
@@ -34,13 +35,13 @@ let apiSave = localStorage.getItem(`apiSaveNumber`)
 
 if (!apiSave) {
   localStorage.setItem(`apiSaveNumber`, 0)
-} /*else {
+} else {
   for (let i = 1; i < apiSave+1; i++) {
     if (localStorage.getItem(`api${i}`) === null) break; {
-      apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</button>`);
+      apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</a>`);
     }
   }
-}*/
+}
 
 // FUNCTIONS--------------------
 
@@ -55,8 +56,8 @@ function getApi(key) {
         return response.json();
       } else {
         // if the response is not 'ok', display to user in modal
-        console.log("BAD REPONSE: " + response.ok);
-        modalText.textContent = "Status Error on Fetch: " + response.status;
+        console.log("BAD REPONSE: " + !response.ok);
+        modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
         modalAlert.append(modalText);
         modal.style.display = "block";
       }
@@ -74,8 +75,8 @@ function getApi(key) {
             return response.json();
           } else {
             // if the response is not 'ok', display to user in modal
-            console.log("BAD REPONSE: " + response.ok);
-            modalText.textContent = "Status Error on Fetch: " + response.status;
+            console.log("BAD REPONSE: " + !response.ok);
+            modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
             modalAlert.append(modalText);
             modal.style.display = "block";
           }
@@ -149,37 +150,7 @@ function init() {
   // retrieve latest data from exchange rate API
 
   getExchangeRate();
-  /*
-  // Getting the currency history array from the localstoragee
-  let history = localStorage.getItem("currency-history");
-  if (history != null) {
-    currencyHistory = JSON.parse(history);
-  }
-  // Calling the function to show buttons
-  getHistoryButtons();*/
-}
-
-let buttonsContainer = $("#history-buttons");
-function getHistoryButtons() {
-  for (
-    let i = 0;
-    currencyHistory.length < 3 ? i < currencyHistory.length : i < 3;
-    i++
-  ) {
-    let divEl = $("<div>");
-    // <div class="col s2 btn-container">
-    divEl.attr("class", "row s2 btn-container");
-
-    // <a id="enter-button" class="waves-effect waves-light btn"
-    let btnEl = $("<a>").text(currencyHistory[i]);
-
-    btnEl.attr("class", "waves-effect waves-light btn");
-
-    if (currencyHistory[0]) {
-      divEl.append(btnEl);
-      buttonsContainer.append(divEl);
-    }
-  }
+  
 }
 
 var getExchangeRate = function() {
@@ -189,14 +160,14 @@ var getExchangeRate = function() {
           // check that code is viable
           // store data from API into global object
           if (response.ok) {
-              console.log(response);
+              // console.log(response);
               myData = response.json();
               myData.then(function (data) {
-                  console.log("print full object of objects", data);
+                  // console.log("print full object of objects", data);
                   // stores the object 'rates' from the data response into
                   // global variable object
                   acceptedCodeRateObject = data.rates;
-                  console.log("print rates", acceptedCodeRateObject);
+                  // console.log("print rates", acceptedCodeRateObject);
                   i = 0
 
                   // Dynamically create dropdown to select currency
@@ -211,7 +182,7 @@ var getExchangeRate = function() {
                   });
               });
             } else {
-              console.log("BAD REPONSE: " + response.ok);
+              console.log("BAD REPONSE: " + !response.ok);
               modalText.textContent = "Status Error on Fetch: " + response.status;
               modalAlert.append(modalText);
               modal.style.display = "block";
@@ -252,24 +223,33 @@ let formSubmitHandler = function (event) {
       apiSave = 1
       localStorage.setItem(`apiSaveNumber`, apiSave)
       localStorage.setItem(`api${apiSave}`, api)
-      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+      if (apiSave) {
+        apiHistoryEl[0].children[0].textContent = localStorage.getItem(`api1`)
+        apiHistoryEl[0].children[1].textContent = localStorage.getItem(`api2`)
+        apiHistoryEl[0].children[2].textContent = localStorage.getItem(`api3`)
+      }
     } else {
       apiSave++
       localStorage.setItem(`apiSaveNumber`, apiSave)
       localStorage.setItem(`api${apiSave}`, api)
-      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+      if (apiHistoryEl[0].children[0]) {
+        apiHistoryEl[0].children[0].textContent = localStorage.getItem(`api1`)
+      }
+      if (apiHistoryEl[0].children[1]) {
+        apiHistoryEl[0].children[1].textContent = localStorage.getItem(`api2`)
+      }
+      if (apiHistoryEl[0].children[2]) {
+        apiHistoryEl[0].children[2].textContent = localStorage.getItem(`api3`)
+      }
+      if (!apiHistoryEl[0].children[2]) {
+        apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</a>`);
+      }
     };
   } else {
     // Alert user to enter valid API key
     modalText.textContent = "Please enter a valid 72 digit Guild Wars 2 API Key";
     modalAlert.append(modalText);
     modal.style.display = "block";
-
-    // updating the current history array to the new selected currency
-
-    /*let selectedCurrency = $("#my-currency").val();
-    currencyHistory.unshift(selectedCurrency);
-    localStorage.setItem("currency-history", JSON.stringify(currencyHistory));*/
   }
   
 };
