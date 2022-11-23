@@ -71,7 +71,11 @@ function getApi(key) {
           // Further adjusts displayed USD to include "$" sign, then displays it
           let displayUsdValue = `$${newUsdValue}`;
           usdFieldEl.textContent = displayUsdValue;
+
+          // Checks if an optional currency is used to convert after USD is established
+          if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
           currencyExchange();
+          }
         });
     });
 }
@@ -124,14 +128,14 @@ function init() {
   // retrieve latest data from exchange rate API
 
   getExchangeRate();
-
+  /*
   // Getting the currency history array from the localstoragee
   let history = localStorage.getItem("currency-history");
   if (history != null) {
     currencyHistory = JSON.parse(history);
   }
   // Calling the function to show buttons
-  getHistoryButtons();
+  getHistoryButtons();*/
 }
 
 let buttonsContainer = $("#history-buttons");
@@ -191,17 +195,15 @@ var getExchangeRate = function () {
 };
 
 var currencyExchange = function () {
+  console.log('trigger')
   const currencyTitle = $("#extra-currency");
-  // Checks if an optional currency is used to convert after USD is established
-  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
     // Displays output for optional currency conversion
-    $(".usd-card").removeClass("hide");
     currencyTitle[0].textContent = currencyFieldEl.value;
+    $(".usd-card").removeClass("hide");
     // Uses currency dataset value to multiply USD value with currency exchange rates
     currencyTitle.append($("<p></p>").html(parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)));
-  }
 };
 
 /* ---------------------- MODALS ----------------------- */
@@ -243,7 +245,6 @@ let formSubmitHandler = function (event) {
   apiArray.push(api.split(""));
   // Checks if an API Key that is entered is of a valid length
   if (apiArray[0].length === 72) {
-    $(".usd-card").removeClass("hide");
     gwApiKey = api;
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
@@ -267,9 +268,9 @@ let formSubmitHandler = function (event) {
 
     // updating the current history array to the new selected currency
 
-    let selectedCurrency = $("#my-currency").val();
+    /*let selectedCurrency = $("#my-currency").val();
     currencyHistory.unshift(selectedCurrency);
-    localStorage.setItem("currency-history", JSON.stringify(currencyHistory));
+    localStorage.setItem("currency-history", JSON.stringify(currencyHistory));*/
   }
   
 };
