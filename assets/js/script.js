@@ -15,6 +15,18 @@ let gwApiKey = '';
 let usdValue = '';
 let newUsdValue = '';
 
+let apiSave = localStorage.getItem(`apiSaveNumber`)
+
+if (!apiSave) {
+  localStorage.setItem(`apiSaveNumber`, 0)
+} else {
+  for (let i = 1; i < apiSave+1; i++) {
+    if (localStorage.getItem(`api${i}`) === null) break; {
+      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</button>`);
+    }
+  }
+}
+
 // FUNCTIONS--------------------
 
 // Pulls GW2 API data
@@ -202,10 +214,17 @@ let formSubmitHandler = function (event) {
     gwApiKey = api
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
+    apiSave++
+    localStorage.setItem(`apiSaveNumber`, apiSave)
+    localStorage.setItem(`api${apiSave}`, api)
+    //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
   } else {
     // Created <p> element to alert user to enter a valid key
     modal.append($('<p></p>').html("Please enter a valid 72 digit Guild Wars 2 API Key"));
     modal.style.display = "block";
+  }
+  if (localStorage.getItem(`apiSaveNumber`) === 3) {
+    localStorage.setItem(`apiSaveNumber`, 0)
   }
 };
 
