@@ -176,9 +176,8 @@ var getExchangeRate = function () {
         });
       });
     } else {
-      //TODO: Alert needs to be removed
-      modal.append($("<p></p>").html("Error: " + response.statusText));
-      modal.style.display = "block";
+      // if the response is not 'ok', display to user in modal
+      modalText.textContent = "Error: " +response.statusText;
     }
   });
 };
@@ -193,13 +192,7 @@ var currencyExchange = function () {
     $(".usd-card").removeClass("hide");
     currencyTitle[0].textContent = currencyFieldEl.value;
     // Uses currency dataset value to multiply USD value with currency exchange rates
-    currencyTitle.append(
-      $("<p></p>").html(
-        parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(
-          2
-        )
-      )
-    );
+    currencyTitle.append($("<p></p>").html(parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)));
   }
 };
 
