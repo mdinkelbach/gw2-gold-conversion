@@ -195,7 +195,7 @@ var getExchangeRate = function () {
 };
 
 var currencyExchange = function () {
-  console.log('trigger')
+  
   const currencyTitle = $("#extra-currency");
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
