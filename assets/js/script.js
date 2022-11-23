@@ -42,7 +42,7 @@ function getApi(key) {
       fetch(requestOtherUrl)
         .then(function (response) {
           if (!response.ok) {
-            modal.append($("<p></p>").html("Error: " + response.statusText));
+            modalText.textContent = "Error: " +response.statusText;
             modal.style.display = "block";
           }
           return response.json();
@@ -167,11 +167,7 @@ var getExchangeRate = function () {
         // append the country code as an option in the drop down
         // use the exchange rate to perform operation to convert data
         $.each(myOptions, function (myCountryCode, myExchangeRate) {
-          mySelect.append(
-            $(`<option data-name="${i++}"></option>`)
-              .val(myCountryCode)
-              .html(myCountryCode)
-          );
+          mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
           acceptedCurrencyRateArray.push(myExchangeRate);
         });
       });
