@@ -1,14 +1,19 @@
-const enterEl = document.getElementById("enter-button");
-const apiFieldEl = document.getElementById("api-key");
-const goldFieldEl = document.getElementById("gold");
-const gemsFieldEl = document.getElementById("gems");
-const usdFieldEl = document.getElementById("usd");
-const currencyFieldEl = document.getElementById("my-currency");
+// HTML element declarations
+const enterEl = document.getElementById('enter-button');
+const apiFieldEl = document.getElementById('api-key');
+const goldFieldEl = document.getElementById('gold');
+const gemsFieldEl = document.getElementById('gems');
+const usdFieldEl = document.getElementById('usd');
+const currencyFieldEl = document.getElementById('my-currency');
 
 // Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
-let gwApiKey = "";
-let usdValue = "";
-let newUsdValue = "";
+
+// ------------------- GW2 API JS --------------------
+
+// GLOBALS----------------------
+let gwApiKey = '';
+let usdValue = '';
+let newUsdValue = '';
 
 // FUNCTIONS--------------------
 
@@ -27,7 +32,9 @@ function getApi(key) {
     })
     .then(function (data) {
       //console.log(data[0].value);
-      goldFieldEl.textContent = data[0].value;
+      // Pulls the value of the entered key account's gold value
+      goldFieldEl.textContent = data[0].value
+      // Looks up entered GW2's global gold to gem conversion rate, based on amount of gold from previous input
       let requestOtherUrl = `https://api.guildwars2.com/v2/commerce/exchange/coins?quantity=${data[0].value}`;
 
       fetch(requestOtherUrl)
@@ -41,12 +48,16 @@ function getApi(key) {
         })
         .then(function (data1) {
           //console.log(data1.quantity);
-          gemsFieldEl.textContent = data1.quantity;
+          // Pulls the amount of gems the entered key account's gold converts into
+          gemsFieldEl.textContent = data1.quantity
+          // Converts account's gem value into USD based on a non-fluctuating amount at a rate of 1 Gem = .0125 Cents
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
           //console.log(`$${parseFloat(usdValue).toFixed(2)}`);
-          newUsdValue = parseFloat(usdValue).toFixed(2);
-          let displayUsdValue = `$${newUsdValue}`;
-          usdFieldEl.textContent = displayUsdValue;
+          // Adjusts USD value to present it in a ledgeable format, aka 2 decimal cents and all dollars
+          newUsdValue = parseFloat(usdValue).toFixed(2)
+          // Further adjusts displayed USD to include "$" sign, then displays it
+          let displayUsdValue = `$${newUsdValue}`
+          usdFieldEl.textContent = displayUsdValue
           currencyExchange();
         });
     });
@@ -97,8 +108,9 @@ var exchangeUrl = `https://api.currencyfreaks.com/latest?apikey=${exchangeApiKey
 // FUNCTIONS--------------------
 
 function init() {
-  // retrieve latest data from exchange rate API
-  getExchangeRate();
+    // retrieve latest data from exchange rate API
+    getExchangeRate();
+
 }
 
 var getExchangeRate = function () {
@@ -140,11 +152,18 @@ var getExchangeRate = function () {
   });
 };
 
-var currencyExchange = function () {
-  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
+var currencyExchange = function() {
+  const currencyTitle = $("#extra-currency");
+  // Checks if an optional currency is used to convert after USD is established
+  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {    
+    // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
-    console.log(newUsdValue * acceptedCurrencyRateArray[rateValue]);
-  }
+    // Displays output for optional currency conversion
+    $(".usd-card").removeClass("hide");
+    currencyTitle[0].textContent = currencyFieldEl.value;
+    // Uses currency dataset value to multiply USD value with currency exchange rates
+    currencyTitle.append($('<p></p>').html(parseFloat(newUsdValue*acceptedCurrencyRateArray[rateValue]).toFixed(2)))
+    }
 };
 
 
@@ -175,19 +194,22 @@ let formSubmitHandler = function (event) {
 
   // Trims API input, then converts and pushes it to an array for verifacation
   let api = apiFieldEl.value.trim();
-
-  $(".usd-card").removeClass("hide");
-  if (api) {
-    gwApiKey = api;
-    getApi(gwApiKey);
+  let apiArray = []
+  apiArray.push(api.split(''));
+  
+  // Checks if an API Key that is entered is of a valid length
+  if (apiArray[0].length === 72) {
+    gwApiKey = api
+    // Runs the GW2 API function on the entered API key
+    getApi(gwApiKey)
   } else {
     // Created <p> element to alert user to enter a valid key
-    modal.append($('<p></p>').html("Please enter a valid Guild Wars 2 API Key"));
+    modal.append($('<p></p>').html("Please enter a valid 72 digit Guild Wars 2 API Key"));
     modal.style.display = "block";
   }
 };
 
-enterEl.addEventListener("click", formSubmitHandler);
+enterEl.addEventListener('click', formSubmitHandler);
 
 // RUN PROGRAM--------------------------------------
 init();
