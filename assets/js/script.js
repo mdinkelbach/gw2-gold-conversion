@@ -5,6 +5,20 @@ const goldFieldEl = document.getElementById("gold");
 const gemsFieldEl = document.getElementById("gems");
 const usdFieldEl = document.getElementById("usd");
 const currencyFieldEl = document.getElementById("my-currency");
+
+/* ---------------------- MODALS ----------------------- */
+// Get the modal main div
+var modal = document.getElementById("my-modal");
+// Get the modal div that will display the error text to user
+var modalAlert = document.getElementById("modal-alert");
+// create a <p> element in html, give it an ID, determine text content
+// append the text to the modalAlert div
+var modalText = document.createElement("p");
+modalText.setAttribute("id", "modal-text");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
 let currencyHistory = [];
 
 // Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416 | 47CCF467-6BAC-384A-862D-9CB56277395909CA89B9-B43F-4E8C-BD64-1185E8426D04
@@ -37,12 +51,15 @@ function getApi(key) {
 
   fetch(requestUrl)
     .then(function (response) {
-      if (!response.ok) {
+      if (response.ok) {
+        return response.json();
+      } else {
         // if the response is not 'ok', display to user in modal
-        modalText.textContent = "Error: " + response.statusText;
+        console.log("BAD REPONSE: " + response.ok);
+        modalText.textContent = "Status Error on Fetch: " + response.status;
+        modalAlert.append(modalText);
         modal.style.display = "block";
       }
-      return response.json();
     })
     .then(function (data) {
       //console.log(data[0].value);
@@ -53,11 +70,15 @@ function getApi(key) {
 
       fetch(requestOtherUrl)
         .then(function (response) {
-          if (!response.ok) {
-            modalText.textContent = "Error: " +response.statusText;
+          if (response.ok) {
+            return response.json();
+          } else {
+            // if the response is not 'ok', display to user in modal
+            console.log("BAD REPONSE: " + response.ok);
+            modalText.textContent = "Status Error on Fetch: " + response.status;
+            modalAlert.append(modalText);
             modal.style.display = "block";
           }
-          return response.json();
         })
         .then(function (data1) {
           //console.log(data1.quantity);
@@ -161,41 +182,45 @@ function getHistoryButtons() {
   }
 }
 
-var getExchangeRate = function () {
-  fetch(exchangeUrl).then(function (response) {
-    // check that code is viable
-    // store data from API into global object
-    if (response.ok) {
-      console.log(response);
-      myData = response.json();
-      myData.then(function (data) {
-        console.log("print full object of objects", data);
-        // stores the object 'rates' from the data response into
-        // global variable object
-        acceptedCodeRateObject = data.rates;
-        console.log("print rates", acceptedCodeRateObject);
-        i = 0;
+var getExchangeRate = function() {
 
-        // Dynamically create dropdown to select currency
-        var myOptions = acceptedCodeRateObject;
-        var mySelect = $("#my-currency");
-        // for each key-value (myCountryCode-myExchangeRate) pair
-        // append the country code as an option in the drop down
-        // use the exchange rate to perform operation to convert data
-        $.each(myOptions, function (myCountryCode, myExchangeRate) {
-          mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
-          acceptedCurrencyRateArray.push(myExchangeRate);
-        });
+  fetch(exchangeUrl)
+      .then(function (response) {
+          // check that code is viable
+          // store data from API into global object
+          if (response.ok) {
+              console.log(response);
+              myData = response.json();
+              myData.then(function (data) {
+                  console.log("print full object of objects", data);
+                  // stores the object 'rates' from the data response into
+                  // global variable object
+                  acceptedCodeRateObject = data.rates;
+                  console.log("print rates", acceptedCodeRateObject);
+                  i = 0
+
+                  // Dynamically create dropdown to select currency
+                  var myOptions = acceptedCodeRateObject;
+                  var mySelect = $('#my-currency');                    
+                  // for each key-value (myCountryCode-myExchangeRate) pair
+                  // append the country code as an option in the drop down
+                  // use the exchange rate to perform operation to convert data
+                  $.each(myOptions, function(myCountryCode, myExchangeRate) {
+                      mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
+                      acceptedCurrencyRateArray.push(myExchangeRate)               
+                  });
+              });
+            } else {
+              console.log("BAD REPONSE: " + response.ok);
+              modalText.textContent = "Status Error on Fetch: " + response.status;
+              modalAlert.append(modalText);
+              modal.style.display = "block";
+            }              
       });
-    } else {
-      // if the response is not 'ok', display to user in modal
-      modalText.textContent = "Error: " +response.statusText;
-    }
-  });
-};
+}
 
 var currencyExchange = function () {
-  console.log('trigger')
+  console.log('trigger');
   const currencyTitle = $("#extra-currency");
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
@@ -206,33 +231,9 @@ var currencyExchange = function () {
     currencyTitle.append($("<p></p>").html(parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)));
 };
 
-/* ---------------------- MODALS ----------------------- */
 
-// Get the modal main div
-var modal = document.getElementById("my-modal");
-// Get the modal div that will display the error text to user
-var modalAlert = document.getElementById("modal-alert");
-// create a <p> element in html, give it an ID, determine text content
-// append the text to the modalAlert div
-var modalText = document.createElement("p");
-modalText.setAttribute("id", "modal-text");
-modalText.textContent = "Please enter a valid 72 digit Guild Wars 2 API Key";
-modalAlert.append(modalText);
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = "none";
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
 
 // EVENT HANDLERS-----------------------------------
 
@@ -260,10 +261,9 @@ let formSubmitHandler = function (event) {
       //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
     };
   } else {
-    // Created <p> element to alert user to enter a valid key
-    modal.append(
-      $("<p></p>").html("Please enter a valid 72 digit Guild Wars 2 API Key")
-    );
+    // Alert user to enter valid API key
+    modalText.textContent = "Please enter a valid 72 digit Guild Wars 2 API Key";
+    modalAlert.append(modalText);
     modal.style.display = "block";
 
     // updating the current history array to the new selected currency
@@ -276,6 +276,19 @@ let formSubmitHandler = function (event) {
 };
 
 enterEl.addEventListener("click", formSubmitHandler);
+
+// MODAL EVENTS -----------------------------------
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
 
 // RUN PROGRAM--------------------------------------
 init();
