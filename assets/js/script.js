@@ -6,6 +6,7 @@ const gemsFieldEl = document.getElementById("gems");
 const usdFieldEl = document.getElementById("usd");
 const currencyFieldEl = document.getElementById("my-currency");
 const apiHistoryEl = $('#history-buttons');
+const apiHistoryButtonsEl = document.querySelector(".api-history");
 
 /* ---------------------- MODALS ----------------------- */
 // Get the modal main div
@@ -63,7 +64,7 @@ function getApi(key) {
       }
     })
     .then(function (data) {
-      //console.log(data[0].value);
+      // console.log(data[0].value);
       // Pulls the value of the entered key account's gold value
       goldFieldEl.textContent = data[0].value;
       // Looks up entered GW2's global gold to gem conversion rate, based on amount of gold from previous input
@@ -82,12 +83,12 @@ function getApi(key) {
           }
         })
         .then(function (data1) {
-          //console.log(data1.quantity);
+          // console.log(data1.quantity);
           // Pulls the amount of gems the entered key account's gold converts into
           gemsFieldEl.textContent = data1.quantity;
           // Converts account's gem value into USD based on a non-fluctuating amount at a rate of 1 Gem = .0125 Cents
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
-          //console.log(`$${parseFloat(usdValue).toFixed(2)}`);
+          // console.log(`$${parseFloat(usdValue).toFixed(2)}`);
           // Adjusts USD value to present it in a ledgeable format, aka 2 decimal cents and all dollars
           newUsdValue = parseFloat(usdValue).toFixed(2);
           // Further adjusts displayed USD to include "$" sign, then displays it
@@ -202,9 +203,6 @@ var currencyExchange = function () {
 };
 
 
-
-
-
 // EVENT HANDLERS-----------------------------------
 
 let formSubmitHandler = function (event) {
@@ -253,6 +251,18 @@ let formSubmitHandler = function (event) {
   }
   
 };
+
+// Setting previous searches data attributes
+apiHistoryButtonsEl.addEventListener("click", function(event) {
+  let element = event.target;
+
+  if (element.matches("a")) {
+     
+    let name = element.getAttribute("data-name");
+    getApi(name);
+  }
+}
+);
 
 enterEl.addEventListener("click", formSubmitHandler);
 
