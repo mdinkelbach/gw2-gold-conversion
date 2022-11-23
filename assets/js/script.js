@@ -7,7 +7,7 @@ const usdFieldEl = document.getElementById("usd");
 const currencyFieldEl = document.getElementById("my-currency");
 let currencyHistory = [];
 
-// Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416
+// Testing API Keys: 3866BD83-5D2B-AA46-8859-518486210B510E1ED7BA-9AE9-49C2-8035-A5B53A93DF06 | 6A8C3A68-7264-054E-8E91-6E368B2C223B803FA554-3434-402A-B047-C8657E85F416 | 47CCF467-6BAC-384A-862D-9CB56277395909CA89B9-B43F-4E8C-BD64-1185E8426D04
 
 // ------------------- GW2 API JS --------------------
 
@@ -15,6 +15,18 @@ let currencyHistory = [];
 let gwApiKey = "";
 let usdValue = "";
 let newUsdValue = "";
+
+let apiSave = localStorage.getItem(`apiSaveNumber`)
+
+if (!apiSave) {
+  localStorage.setItem(`apiSaveNumber`, 0)
+} /*else {
+  for (let i = 1; i < apiSave+1; i++) {
+    if (localStorage.getItem(`api${i}`) === null) break; {
+      apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</button>`);
+    }
+  }
+}*/
 
 // FUNCTIONS--------------------
 
@@ -59,7 +71,11 @@ function getApi(key) {
           // Further adjusts displayed USD to include "$" sign, then displays it
           let displayUsdValue = `$${newUsdValue}`;
           usdFieldEl.textContent = displayUsdValue;
+
+          // Checks if an optional currency is used to convert after USD is established
+          if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
           currencyExchange();
+          }
         });
     });
 }
@@ -112,14 +128,14 @@ function init() {
   // retrieve latest data from exchange rate API
 
   getExchangeRate();
-
+  /*
   // Getting the currency history array from the localstoragee
   let history = localStorage.getItem("currency-history");
   if (history != null) {
     currencyHistory = JSON.parse(history);
   }
   // Calling the function to show buttons
-  getHistoryButtons();
+  getHistoryButtons();*/
 }
 
 let buttonsContainer = $("#history-buttons");
@@ -179,17 +195,15 @@ var getExchangeRate = function () {
 };
 
 var currencyExchange = function () {
+  console.log('trigger')
   const currencyTitle = $("#extra-currency");
-  // Checks if an optional currency is used to convert after USD is established
-  if (acceptedCurrencyCodeArray.includes(currencyFieldEl.value)) {
     // Checks for a specified currencies dataset value
     let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
     // Displays output for optional currency conversion
-    $(".usd-card").removeClass("hide");
     currencyTitle[0].textContent = currencyFieldEl.value;
+    $(".usd-card").removeClass("hide");
     // Uses currency dataset value to multiply USD value with currency exchange rates
     currencyTitle.append($("<p></p>").html(parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)));
-  }
 };
 
 /* ---------------------- MODALS ----------------------- */
@@ -231,10 +245,20 @@ let formSubmitHandler = function (event) {
   apiArray.push(api.split(""));
   // Checks if an API Key that is entered is of a valid length
   if (apiArray[0].length === 72) {
-    $(".usd-card").removeClass("hide");
     gwApiKey = api;
     // Runs the GW2 API function on the entered API key
-    getApi(gwApiKey);
+    getApi(gwApiKey)
+    if (apiSave === 3) {
+      apiSave = 1
+      localStorage.setItem(`apiSaveNumber`, apiSave)
+      localStorage.setItem(`api${apiSave}`, api)
+      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+    } else {
+      apiSave++
+      localStorage.setItem(`apiSaveNumber`, apiSave)
+      localStorage.setItem(`api${apiSave}`, api)
+      //apiHistoryEl.append(`<button class="btn" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</button>`);
+    };
   } else {
     // Created <p> element to alert user to enter a valid key
     modal.append(
@@ -244,10 +268,11 @@ let formSubmitHandler = function (event) {
 
     // updating the current history array to the new selected currency
 
-    let selectedCurrency = $("#my-currency").val();
+    /*let selectedCurrency = $("#my-currency").val();
     currencyHistory.unshift(selectedCurrency);
-    localStorage.setItem("currency-history", JSON.stringify(currencyHistory));
+    localStorage.setItem("currency-history", JSON.stringify(currencyHistory));*/
   }
+  
 };
 
 enterEl.addEventListener("click", formSubmitHandler);
