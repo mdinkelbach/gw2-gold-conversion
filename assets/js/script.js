@@ -66,7 +66,11 @@ function getApi(key) {
     .then(function (data) {
       // console.log(data[0].value);
       // Pulls the value of the entered key account's gold value
-      goldFieldEl.textContent = data[0].value;
+      let copper = "";
+      let silver = "";
+      let gold = "";
+      coinSpacing(data[0].value);
+      
       // Looks up entered GW2's global gold to gem conversion rate, based on amount of gold from previous input
       let requestOtherUrl = `https://api.guildwars2.com/v2/commerce/exchange/coins?quantity=${data[0].value}`;
 
@@ -85,7 +89,7 @@ function getApi(key) {
         .then(function (data1) {
           // console.log(data1.quantity);
           // Pulls the amount of gems the entered key account's gold converts into
-          gemsFieldEl.textContent = data1.quantity;
+          gemsFieldEl.innerHTML = `${data1.quantity} <img src="./assets/images/Gem.png" alt="Gem">`;
           // Converts account's gem value into USD based on a non-fluctuating amount at a rate of 1 Gem = .0125 Cents
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
           // console.log(`$${parseFloat(usdValue).toFixed(2)}`);
@@ -101,6 +105,25 @@ function getApi(key) {
           }
         });
     });
+}
+
+function coinSpacing(coins) {
+  let coinValue = coins + '';
+  let coinArray = [];
+  let goldArray = [];
+  coinArray = coinValue.split("");
+  coinArray.reverse();
+  copper = `${coinArray[1]}${coinArray[0]}`;
+  console.log(copper)
+  silver = `${coinArray[3]}${coinArray[2]}`;
+  console.log(silver)
+  coinArray.reverse();
+  for (let i = 0; i < coinArray.length-4; i++) {
+    goldArray.push(coinArray[i]);
+  }
+  gold = goldArray.join("");
+  console.log(gold)
+  goldFieldEl.innerHTML = `${gold} <img src="./assets/images/Gold_coin.png" alt="Gold"> ${silver} <img src="./assets/images/Silver_coin.png" alt="Silver"> ${copper} <img src="./assets/images/Copper_coin.png" alt="Copper">`;
 }
 
 // ------------------- EXCHANGE RATE JS --------------------

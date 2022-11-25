@@ -19,10 +19,29 @@ body {
 #history-buttons {
   flex-direction: column;
 }
+
+#gold, #gems {
+  display: flex;
+  align-items: center;
+}
+
+#gems>img {
+  width: 28px;
+  height: 25px;
+}
+
+#gold>img {
+  width: 32px;
+  height: 32px;
+}
+
+#gems
+
 .card-selected {
   position: relative;
   left: 44vw !important;
 }
+
 .heading {
   font-family: "Shojumaru", serif;
 }
