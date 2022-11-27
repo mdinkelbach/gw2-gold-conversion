@@ -77,10 +77,7 @@ function getApi(key) {
           } else {
             // If the response is not 'ok', display to user in modal
             console.log("BAD REPONSE: " + !response.ok);
-            modalText.textContent =
-              "Status Error on Fetch: " +
-              response.status +
-              ". Check your API key or network connection.";
+            modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
             modalAlert.append(modalText);
             modal.style.display = "block";
           }
