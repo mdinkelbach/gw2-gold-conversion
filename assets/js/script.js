@@ -39,7 +39,7 @@ if (!apiSave) {
 } else {
   for (let i = 1; i < apiSave + 1; i++) {
     if (localStorage.getItem(`api${i}`) === null) break; {
-     apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</a>`);
+      apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</a>`);
     }
   }
 }
