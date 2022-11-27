@@ -286,11 +286,7 @@ let formSubmitHandler = function (event) {
         apiHistoryEl[0].children[2].textContent = localStorage.getItem(`api3`);
       }
       if (!apiHistoryEl[0].children[2]) {
-        apiHistoryEl.append(
-          `<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(
-            `api${apiSave}`
-          )}">${localStorage.getItem(`api${apiSave}`)}</a>`
-        );
+        apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</a>`);
       }
     }
   } else {
