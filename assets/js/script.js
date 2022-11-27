@@ -190,11 +190,7 @@ var getExchangeRate = function () {
         // append the country code as an option in the drop down
         // use the exchange rate to perform operation to convert data
         $.each(myOptions, function (myCountryCode, myExchangeRate) {
-          mySelect.append(
-            $(`<option data-name="${i++}"></option>`)
-              .val(myCountryCode)
-              .html(myCountryCode)
-          );
+          mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
           acceptedCurrencyRateArray.push(myExchangeRate);
         });
       });
