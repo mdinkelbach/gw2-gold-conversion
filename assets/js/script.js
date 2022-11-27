@@ -172,7 +172,8 @@ function init() {
 }
 
 var getExchangeRate = function () {
-  fetch(exchangeUrl).then(function (response) {
+  fetch(exchangeUrl)
+  .then(function (response) {
     // check that code is viable
     // store data from API into global object
     if (response.ok) {
@@ -215,125 +216,21 @@ var currencyExchange = function () {
   $(".currency-table").removeClass("hide");
   // Uses currency dataset value to multiply USD value with currency exchange rates, displaying it with the correct currency symbol
   if (currencyFieldEl.value === "AUD") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `$ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "CAD") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `$ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "CHF") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `fr. ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "CNY") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `¥ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "EUR") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `€${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "GBP") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `£${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "HKD") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `HK$ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "INR") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `₹ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "JPY") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `¥ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "KRW") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `₩ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "MXN") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `$ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "NOK") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `kr ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "NZD") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `$ ${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
-  } else if (currencyFieldEl.value === "SEK") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)} kr`
-      )
-    );
-  } else if (currencyFieldEl.value === "SGD") {
-    currencyTitle.append(
-      $("<p></p>").html(
-        `$${parseFloat(
-          newUsdValue * acceptedCurrencyRateArray[rateValue]
-        ).toFixed(2)}`
-      )
-    );
+    currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "CAD") {currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "CHF") {currencyTitle.append($("<p></p>").html(`fr. ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "CNY") {currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "EUR") {currencyTitle.append($("<p></p>").html(`€${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "GBP") {currencyTitle.append($("<p></p>").html(`£${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "HKD") {currencyTitle.append($("<p></p>").html(`HK$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "INR") {currencyTitle.append($("<p></p>").html(`₹ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "JPY") {currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "KRW") {currencyTitle.append($("<p></p>").html(`₩ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "MXN") {currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "NOK") {currencyTitle.append($("<p></p>").html(`kr ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "NZD") {currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+  } else if (currencyFieldEl.value === "SEK") {currencyTitle.append($("<p></p>").html(`${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)} kr`));
+  } else if (currencyFieldEl.value === "SGD") {currencyTitle.append($("<p></p>").html(`$${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
   }
 };
 
