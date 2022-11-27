@@ -34,6 +34,7 @@ let newUsdValue = "";
 
 let apiSave = localStorage.getItem(`apiSaveNumber`)
 
+// Sets history buttons if search history already exists
 if (!apiSave) {
   localStorage.setItem(`apiSaveNumber`, 0)
 } else {
@@ -56,7 +57,7 @@ function getApi(key) {
       if (response.ok) {
         return response.json();
       } else {
-        // if the response is not 'ok', display to user in modal
+        // If the response is not 'ok', display to user in modal
         console.log("BAD REPONSE: " + !response.ok);
         modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
         modalAlert.append(modalText);
@@ -64,11 +65,7 @@ function getApi(key) {
       }
     })
     .then(function (data) {
-      // console.log(data[0].value);
       // Pulls the value of the entered key account's gold value
-      let copper = "";
-      let silver = "";
-      let gold = "";
       coinSpacing(data[0].value);
       
       // Looks up entered GW2's global gold to gem conversion rate, based on amount of gold from previous input
@@ -79,7 +76,7 @@ function getApi(key) {
           if (response.ok) {
             return response.json();
           } else {
-            // if the response is not 'ok', display to user in modal
+            // If the response is not 'ok', display to user in modal
             console.log("BAD REPONSE: " + !response.ok);
             modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
             modalAlert.append(modalText);
@@ -87,12 +84,10 @@ function getApi(key) {
           }
         })
         .then(function (data1) {
-          // console.log(data1.quantity);
           // Pulls the amount of gems the entered key account's gold converts into
           gemsFieldEl.innerHTML = `${data1.quantity} <img src="./assets/images/Gem.png" alt="Gem">`;
           // Converts account's gem value into USD based on a non-fluctuating amount at a rate of 1 Gem = .0125 Cents
           usdValue = Math.round(data1.quantity * 0.0125 * 100) / 100;
-          // console.log(`$${parseFloat(usdValue).toFixed(2)}`);
           // Adjusts USD value to present it in a ledgeable format, aka 2 decimal cents and all dollars
           newUsdValue = parseFloat(usdValue).toFixed(2);
           // Further adjusts displayed USD to include "$" sign, then displays it
@@ -107,22 +102,25 @@ function getApi(key) {
     });
 }
 
+// Seperates coins into the 3 different in-game values: Gold, Silver, and Copper
 function coinSpacing(coins) {
   let coinValue = coins + '';
   let coinArray = [];
   let goldArray = [];
+  // Creates an array from the Account's coin value
   coinArray = coinValue.split("");
+  // Reverses the Array such that the "Copper" value will always be the first 2 numbers, and the "Silver" value will always be the second 2 numbers
   coinArray.reverse();
   copper = `${coinArray[1]}${coinArray[0]}`;
-  console.log(copper)
   silver = `${coinArray[3]}${coinArray[2]}`;
-  console.log(silver)
+  // Corrects the Coin Array such that the "Gold" value will be all numbers starting from the beginning, minus the last 4 digits (Copper and Silver values)
   coinArray.reverse();
+  // Inserts the "Gold" values into a new array, then combines them into a single number
   for (let i = 0; i < coinArray.length-4; i++) {
     goldArray.push(coinArray[i]);
   }
   gold = goldArray.join("");
-  console.log(gold)
+  // Displays coinage values, placing coin symbols where appropriate
   goldFieldEl.innerHTML = `${gold} <img src="./assets/images/Gold_coin.png" alt="Gold"> ${silver} <img src="./assets/images/Silver_coin.png" alt="Silver"> ${copper} <img src="./assets/images/Copper_coin.png" alt="Copper">`;
 }
 
@@ -137,24 +135,23 @@ var currencyRateArray = [];
 // currency options as a base option.
 // It is possible to push more to codes to this array if desired
 var acceptedCurrencyCodeArray = [
-  "MXN",
-  "EUR",
-  "JPY",
-  "GBP",
-  "CNY",
   "AUD",
   "CAD",
   "CHF",
+  "CNY",
+  "EUR",
+  "GBP",
   "HKD",
-  "SGD",
-  "SEK",
+  "INR",
+  "JPY",
   "KRW",
+  "MXN",
   "NOK",
   "NZD",
-  "INR",
+  "SEK",
+  "SGD",
 ];
 var acceptedCurrencyCodeString = acceptedCurrencyCodeArray.toString();
-// console.log(acceptedCurrencyCodeString);
 // This array will hold the rates corresponding to the
 // acceptedCurrencyCodeArray
 var acceptedCurrencyRateArray = [];
@@ -166,7 +163,6 @@ var baseCurrency = "USD";
 var exchangeApiKey = "904542f1d90e49118826f374af1f2cbf";
 
 var exchangeUrl = `https://api.currencyfreaks.com/latest?apikey=${exchangeApiKey}&symbols=${acceptedCurrencyCodeString}`;
-// console.log(exchangeUrl);
 
 // FUNCTIONS--------------------
 
@@ -184,14 +180,11 @@ var getExchangeRate = function() {
           // check that code is viable
           // store data from API into global object
           if (response.ok) {
-              // console.log(response);
               myData = response.json();
               myData.then(function (data) {
-                  // console.log("print full object of objects", data);
                   // stores the object 'rates' from the data response into
                   // global variable object
                   acceptedCodeRateObject = data.rates;
-                  // console.log("print rates", acceptedCodeRateObject);
                   i = 0
 
                   // Dynamically create dropdown to select currency
@@ -214,6 +207,7 @@ var getExchangeRate = function() {
       });
 }
 
+// Exchanges and displays a selected currency
 var currencyExchange = function () {
   const currencyTitle = $("#extra-currency");
     // Checks for a specified currencies dataset value
@@ -221,8 +215,38 @@ var currencyExchange = function () {
     // Displays output for optional currency conversion
     currencyTitle[0].textContent = currencyFieldEl.value;
     $(".usd-card").removeClass("hide");
-    // Uses currency dataset value to multiply USD value with currency exchange rates
-    currencyTitle.append($("<p></p>").html(parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)));
+    // Uses currency dataset value to multiply USD value with currency exchange rates, displaying it with the correct currency symbol
+    if (currencyFieldEl.value === 'AUD')  {
+      currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'CAD'){
+      currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'CHF') {
+      currencyTitle.append($("<p></p>").html(`fr. ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'CNY'){
+      currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'EUR'){
+      currencyTitle.append($("<p></p>").html(`€${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'GBP'){
+      currencyTitle.append($("<p></p>").html(`£${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'HKD'){
+      currencyTitle.append($("<p></p>").html(`HK$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'INR'){
+      currencyTitle.append($("<p></p>").html(`₹ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'JPY'){
+      currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'KRW'){
+      currencyTitle.append($("<p></p>").html(`₩ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'MXN'){
+      currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'NOK'){
+      currencyTitle.append($("<p></p>").html(`kr ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'NZD'){
+      currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    } else if (currencyFieldEl.value === 'SEK'){
+      currencyTitle.append($("<p></p>").html(`${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)} kr`));
+    } else if (currencyFieldEl.value === 'SGD'){
+      currencyTitle.append($("<p></p>").html(`$${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    }
 };
 
 
@@ -240,6 +264,7 @@ let formSubmitHandler = function (event) {
     gwApiKey = api;
     // Runs the GW2 API function on the entered API key
     getApi(gwApiKey)
+    // Checks if all 3 slots have been used for search history; if they have, resets the counter; if not, increases the counter and makes a new button if 3 do not already exist
     if (apiSave === 3) {
       apiSave = 1
       localStorage.setItem(`apiSaveNumber`, apiSave)

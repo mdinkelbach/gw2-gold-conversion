@@ -35,8 +35,6 @@ body {
   height: 32px;
 }
 
-#gems
-
 .card-selected {
   position: relative;
   left: 44vw !important;
