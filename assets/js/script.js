@@ -38,8 +38,13 @@ if (!apiSave) {
   localStorage.setItem(`apiSaveNumber`, 0);
 } else {
   for (let i = 1; i < apiSave + 1; i++) {
-    if (localStorage.getItem(`api${i}`) === null) break; {
-      apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${i}`)}">${localStorage.getItem(`api${i}`)}</a>`);
+    if (localStorage.getItem(`api${i}`) === null) break;
+    {
+      apiHistoryEl.append(
+        `<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(
+          `api${i}`
+        )}">${localStorage.getItem(`api${i}`)}</a>`
+      );
     }
   }
 }
@@ -58,7 +63,10 @@ function getApi(key) {
       } else {
         // If the response is not 'ok', display to user in modal
         console.log("BAD REPONSE: " + !response.ok);
-        modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
+        modalText.textContent =
+          "Status Error on Fetch: " +
+          response.status +
+          ". Check your API key or network connection.";
         modalAlert.append(modalText);
         modal.style.display = "block";
       }
@@ -77,7 +85,10 @@ function getApi(key) {
           } else {
             // If the response is not 'ok', display to user in modal
             console.log("BAD REPONSE: " + !response.ok);
-            modalText.textContent = "Status Error on Fetch: " + response.status + ". Check your API key or network connection.";
+            modalText.textContent =
+              "Status Error on Fetch: " +
+              response.status +
+              ". Check your API key or network connection.";
             modalAlert.append(modalText);
             modal.style.display = "block";
           }
@@ -172,8 +183,7 @@ function init() {
 }
 
 var getExchangeRate = function () {
-  fetch(exchangeUrl)
-  .then(function (response) {
+  fetch(exchangeUrl).then(function (response) {
     // check that code is viable
     // store data from API into global object
     if (response.ok) {
@@ -191,7 +201,11 @@ var getExchangeRate = function () {
         // append the country code as an option in the drop down
         // use the exchange rate to perform operation to convert data
         $.each(myOptions, function (myCountryCode, myExchangeRate) {
-          mySelect.append($(`<option data-name="${i++}"></option>`).val(myCountryCode).html(myCountryCode));
+          mySelect.append(
+            $(`<option data-name="${i++}"></option>`)
+              .val(myCountryCode)
+              .html(myCountryCode)
+          );
           acceptedCurrencyRateArray.push(myExchangeRate);
         });
       });
@@ -207,6 +221,8 @@ var getExchangeRate = function () {
 // Exchanges and displays a selected currency
 var currencyExchange = function () {
   const currencyTitle = $("#extra-currency");
+
+  const tableTitle = $(".selected-currency-table");
   // Checks for a specified currencies dataset value
   let rateValue = currencyFieldEl.selectedOptions[0].dataset.name;
   // Displays output for optional currency conversion
@@ -216,35 +232,141 @@ var currencyExchange = function () {
   $(".currency-table").removeClass("hide");
   // Uses currency dataset value to multiply USD value with currency exchange rates, displaying it with the correct currency symbol
   if (currencyFieldEl.value === "AUD") {
-    currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "CAD"){
-  currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "CHF"){
-  currencyTitle.append($("<p></p>").html(`fr. ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "CNY"){
-  currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "EUR"){
-  currencyTitle.append($("<p></p>").html(`€${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "GBP"){
-  currencyTitle.append($("<p></p>").html(`£${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "HKD"){
-  currencyTitle.append($("<p></p>").html(`HK$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "INR"){
-  currencyTitle.append($("<p></p>").html(`₹ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "JPY"){
-  currencyTitle.append($("<p></p>").html(`¥ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "KRW"){
-  currencyTitle.append($("<p></p>").html(`₩ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "MXN"){
-  currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "NOK"){
-  currencyTitle.append($("<p></p>").html(`kr ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "NZD"){
-  currencyTitle.append($("<p></p>").html(`$ ${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
-  } else if (currencyFieldEl.value === "SEK"){
-  currencyTitle.append($("<p></p>").html(`${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)} kr`));
-  } else if (currencyFieldEl.value === "SGD"){
-  currencyTitle.append($("<p></p>").html(`$${parseFloat(newUsdValue * acceptedCurrencyRateArray[rateValue]).toFixed(2)}`));
+    currencyTitle.append(
+      $("<p></p>").html(
+        `$ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    //adding the selected currency in the table heading
+    tableTitle.html("AUD");
+  } else if (currencyFieldEl.value === "CAD") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `$ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("CAD");
+  } else if (currencyFieldEl.value === "CHF") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `fr. ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("CHF");
+  } else if (currencyFieldEl.value === "CNY") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `¥ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("CNY");
+  } else if (currencyFieldEl.value === "EUR") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `€${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("EUR");
+  } else if (currencyFieldEl.value === "GBP") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `£${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("GBP");
+  } else if (currencyFieldEl.value === "HKD") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `HK$ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("HKD");
+  } else if (currencyFieldEl.value === "INR") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `₹ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("INR");
+  } else if (currencyFieldEl.value === "JPY") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `¥ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("JPY");
+  } else if (currencyFieldEl.value === "KRW") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `₩ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("KRW");
+  } else if (currencyFieldEl.value === "MXN") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `$ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("MXN");
+  } else if (currencyFieldEl.value === "NOK") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `kr ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("NOK");
+  } else if (currencyFieldEl.value === "NZD") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `$ ${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("NZD");
+  } else if (currencyFieldEl.value === "SEK") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)} kr`
+      )
+    );
+    tableTitle.html("SEK");
+  } else if (currencyFieldEl.value === "SGD") {
+    currencyTitle.append(
+      $("<p></p>").html(
+        `$${parseFloat(
+          newUsdValue * acceptedCurrencyRateArray[rateValue]
+        ).toFixed(2)}`
+      )
+    );
+    tableTitle.html("SGD");
   }
 };
 
@@ -286,7 +408,11 @@ let formSubmitHandler = function (event) {
         apiHistoryEl[0].children[2].textContent = localStorage.getItem(`api3`);
       }
       if (!apiHistoryEl[0].children[2]) {
-        apiHistoryEl.append(`<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(`api${apiSave}`)}">${localStorage.getItem(`api${apiSave}`)}</a>`);
+        apiHistoryEl.append(
+          `<a class="waves-effect waves-light btn" data-count"${apiSave}" data-name="${localStorage.getItem(
+            `api${apiSave}`
+          )}">${localStorage.getItem(`api${apiSave}`)}</a>`
+        );
       }
     }
   } else {
@@ -303,7 +429,6 @@ apiHistoryButtonsEl.addEventListener("click", function (event) {
   let element = event.target;
 
   if (element.matches("a")) {
-    $(".usd-card").removeClass("hide");
     // removed the class for the table raj bhakta 11/26
     $(".container-table").removeClass("hide");
     let name = element.getAttribute("data-name");
