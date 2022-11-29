@@ -8,7 +8,6 @@ const currencyFieldEl = document.getElementById("my-currency");
 const apiHistoryEl = $('#history-buttons');
 const apiHistoryButtonsEl = document.querySelector(".api-history");
 
-/* ---------------------- MODALS ----------------------- */
 // Get the modal main div
 var modal = document.getElementById("my-modal");
 // Get the modal div that will display the error text to user
@@ -126,7 +125,6 @@ function coinSpacing(coins) {
 
 // ------------------- EXCHANGE RATE JS --------------------
 
-// QUERIES----------------------
 
 // GLOBALS----------------------
 var currencyNameArray = [];
@@ -160,7 +158,9 @@ var acceptedCodeRateObject = {};
 // baseCurrency will be USD
 var baseCurrency = "USD";
 
-var exchangeApiKey = "904542f1d90e49118826f374af1f2cbf";
+// original key; we maxed out the 1000 uses the morning the project was due
+// var exchangeApiKey = "904542f1d90e49118826f374af1f2cbf";
+var exchangeApiKey = "35a8b491a5b247f296daaec7da09e199";
 
 var exchangeUrl = `https://api.currencyfreaks.com/latest?apikey=${exchangeApiKey}&symbols=${acceptedCurrencyCodeString}`;
 
