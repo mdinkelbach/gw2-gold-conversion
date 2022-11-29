@@ -1,4 +1,4 @@
-# Project 01 - [Gold to Real Money Converter - Guild Wars 2]
+# Project 01 - Game Currency to Real World Currency Exchange
 
 # Purpose
 The purpose of this project is to develop an original responsive webpage as a team using concepts learned in class over the previous several weeks. The main concepts for this integration are to:
@@ -19,9 +19,9 @@ The webpage waits for a user to input their Guild Wars 2 API Key. On "Submit" th
 Each API entered is saved into local storage for quick recall by the user in the future.
 
 
-![Image of website on initial load](./assets/images/{inital load}.png)
-![Image of website displaying local storage use](./assets/images/{with local storage}.png)
-![Image of website with conversion figures](./assets/images/{with outputs filled}.png)
+![Image of website on initial load](./assets/images/initial-load.png)
+![Image of website displaying local storage use](./assets/images/local-storage.png)
+![Image of website with conversion figures displayed](./assets/images/all-features.png)
 
 
 ## Installation
@@ -42,6 +42,8 @@ Resources used:
 4) Bootcamp Modules
 5) [jQuery.each()](https://api.jquery.com/jquery.each/#:~:text=each()%2C%20which%20is%20used,corresponding%20array%20value%20each%20time.)
 6) [jQuery Get Selected Option From Dropdown](https://stackoverflow.com/questions/10659097/jquery-get-selected-option-from-dropdown)
+7) [World Currency Symbols](https://fastspring.com/blog/how-to-format-30-currencies-from-countries-all-over-the-world/)
+
 
 
 
